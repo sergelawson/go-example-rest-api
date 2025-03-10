@@ -75,6 +75,26 @@ func updateAlbum(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
+func deleteAlbum(c *gin.Context) {
+	albumId := c.Param("id")
+
+	var newAlbums []album
+
+	for _, currentAlbum := range albums {
+
+		if albumId == currentAlbum.ID {
+
+			continue
+		}
+		newAlbums = append(newAlbums, currentAlbum)
+	}
+
+	albums = newAlbums
+
+	c.Status(http.StatusNoContent)
+
+}
+
 func main() {
 
 	router := gin.Default()
@@ -84,6 +104,8 @@ func main() {
 	router.POST("/albums", postAlbum)
 
 	router.PUT("/albums/:id", updateAlbum)
+
+	router.DELETE("/albums/:id", deleteAlbum)
 
 	router.Run("localhost:8080")
 

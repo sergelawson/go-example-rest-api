@@ -11,7 +11,7 @@ Content-Type: application/json
     "title": "Next Dawg Party",
     "artist": "Dawg boy",
     "price": 55
-  },
+  }
 
 
 ####
@@ -24,4 +24,9 @@ Content-Type: application/json
     "title": "Sexy Dawg Party",
     "artist": "Dawg boy",
     "price": 54
-  },
+  }
+
+
+####
+
+DELETE   http://localhost:8080/albums/363684
