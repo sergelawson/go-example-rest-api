@@ -33,7 +33,7 @@ var albums = []album{
 func validationErrorResponse(err error) gin.H {
 	var errors []string
 	for _, e := range err.(validator.ValidationErrors) {
-		errors = append(errors, strings.ToLower(e.Field())+": " + e.Tag())
+		errors = append(errors, strings.ToLower(e.Field())+": "+e.Tag())
 	}
 	return gin.H{"errors": errors}
 }
@@ -55,6 +55,26 @@ func postAlbum(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
+func updateAlbum(c *gin.Context) {
+
+	albumId := c.Param("id")
+
+	var newAlbum album
+
+	if err := c.ShouldBindJSON(&newAlbum); err != nil {
+		c.JSON(http.StatusBadRequest, validationErrorResponse(err))
+		return
+	}
+
+	for i, currentAlbum := range albums {
+		if currentAlbum.ID == albumId {
+			albums[i] = newAlbum
+			break
+		}
+	}
+	c.IndentedJSON(http.StatusCreated, newAlbum)
+}
+
 func main() {
 
 	router := gin.Default()
@@ -62,6 +82,8 @@ func main() {
 	router.GET("/albums", getAlbums)
 
 	router.POST("/albums", postAlbum)
+
+	router.PUT("/albums/:id", updateAlbum)
 
 	router.Run("localhost:8080")
 
