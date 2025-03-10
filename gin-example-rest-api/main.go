@@ -1,0 +1,68 @@
+package main
+
+import (
+	"net/http"
+	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+)
+
+type album struct {
+	ID     string  `json:"id" binding:"required"`
+	Title  string  `json:"title" binding:"required"`
+	Artist string  `json:"artist" binding:"required"`
+	Price  float64 `json:"price" binding:"required"`
+}
+
+var albums = []album{
+	{
+		ID:     "933301012",
+		Title:  "Troublesome world",
+		Artist: "Michael B Jordan",
+		Price:  44,
+	},
+	{
+		ID:     "93440034",
+		Title:  "The world of Dragon",
+		Artist: "Hunter Soldier",
+		Price:  50,
+	},
+}
+
+func validationErrorResponse(err error) gin.H {
+	var errors []string
+	for _, e := range err.(validator.ValidationErrors) {
+		errors = append(errors, strings.ToLower(e.Field())+": " + e.Tag())
+	}
+	return gin.H{"errors": errors}
+}
+
+func getAlbums(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, albums)
+}
+
+func postAlbum(c *gin.Context) {
+	var newAlbum album
+
+	if err := c.ShouldBindJSON(&newAlbum); err != nil {
+		c.JSON(http.StatusBadRequest, validationErrorResponse(err))
+		return
+	}
+
+	albums = append(albums, newAlbum)
+
+	c.IndentedJSON(http.StatusCreated, newAlbum)
+}
+
+func main() {
+
+	router := gin.Default()
+
+	router.GET("/albums", getAlbums)
+
+	router.POST("/albums", postAlbum)
+
+	router.Run("localhost:8080")
+
+}
