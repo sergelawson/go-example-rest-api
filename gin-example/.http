@@ -1,0 +1,32 @@
+GET http://localhost:8080/albums
+Content-Type: application/json
+
+####
+
+POST http://localhost:8080/albums
+Content-Type: application/json
+
+  {
+    "id": "363684",
+    "title": "Next Dawg Party",
+    "artist": "Dawg boy",
+    "price": 55
+  }
+
+
+####
+
+PUT  http://localhost:8080/albums/363684
+Content-Type: application/json
+
+  {
+    "id": "363684",
+    "title": "Sexy Dawg Party",
+    "artist": "Dawg boy",
+    "price": 54
+  }
+
+
+####
+
+DELETE   http://localhost:8080/albums/363684
