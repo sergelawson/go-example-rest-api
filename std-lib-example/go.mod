@@ -1,0 +1,1 @@
+module github.com/sergelawson/go-example-rest-api/std-lib-example
