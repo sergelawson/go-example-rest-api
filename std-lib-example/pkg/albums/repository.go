@@ -6,7 +6,7 @@ import (
 )
 
 type albumStore interface {
-	Add(id string, album Album) (Album, error)
+	Add(id string, album NewAlbum) (Album, error)
 	Get(id string) (Album, error)
 	Update(id string, album Album) error
 	List() ([]Album, error)
@@ -17,7 +17,7 @@ func NewAlbumStore() albumStore {
 	return &Albums{}
 }
 
-func (a *Albums) Add(id string, album Album) (Album, error) {
+func (a *Albums) Add(id string, album NewAlbum) (Album, error) {
 	newAlbum := Album{
 		ID:     id,
 		Title:  album.Title,
@@ -38,9 +38,14 @@ func (a *Albums) Get(id string) (Album, error) {
 }
 
 func (a *Albums) Update(id string, album Album) error {
-	for i, album := range a.albums {
-		if album.ID == id {
-			a.albums[i] = album
+	for i, currentAlbum := range a.albums {
+		if currentAlbum.ID == id {
+			a.albums[i] =  Album{
+                ID:     id,
+                Title:  album.Title,
+                Artist: album.Artist,
+                Price:  album.Price,
+            }
 			return nil
 		}
 	}

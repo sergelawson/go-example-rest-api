@@ -1,0 +1,31 @@
+GET http://localhost:8080/albums
+Content-Type: application/json
+
+####
+
+POST http://localhost:8080/albums
+Content-Type: application/json
+
+  {
+    "title": "Test Pal",
+    "artist": "Top boy",
+    "price": 52
+  }
+
+
+####
+
+PUT  http://localhost:8080/albums/test-pal
+Content-Type: application/json
+
+  {
+    "id": "test-pal",
+    "title": "Test Pal",
+    "artist": "Joy boy",
+    "price": 67
+  }
+
+
+####
+
+DELETE   http://localhost:8080/albums/363684
